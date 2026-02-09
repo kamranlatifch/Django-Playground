@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "blog",  # Our blog app - Django needs to know about it!
+    "student",  # Our student app - Django needs to know about it!
 ]
 
 MIDDLEWARE = [
