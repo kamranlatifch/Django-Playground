@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "student",  # Our student app - Django needs to know about it!
-    "oneToMany",  # Our onetoonemany app - Django needs to know about it!
+    "oneToMany",  # Our oneToMany app - Django needs to know about it!
+    "manyToMany",  # Our manyToMany app - Django needs to know about it!
 ]
 
 MIDDLEWARE = [
