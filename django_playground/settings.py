@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "silk",  # Query profiling & analysis (django-silky)
     "student",  # Our student app - Django needs to know about it!
     "oneToMany",  # Our oneToMany app - Django needs to know about it!
     "manyToMany",  # Our manyToMany app - Django needs to know about it!
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "silk.middleware.SilkyMiddleware",  # Must be after Auth (so request.user is available)
 ]
 
 ROOT_URLCONF = "django_playground.urls"
@@ -118,3 +120,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+# ---------------------------------------------------------------------------
+# Silk – Query profiling & analysis (development only)
+# ---------------------------------------------------------------------------
+SILKY_PYTHON_PROFILER = True  # Enable Python profiler (timing)
+SILKY_PYTHON_PROFILER_RESULT_PATH = "profiles/"  # Where to save profile results
+SILKY_ANALYZE_QUERIES = True   # Record SQL queries (count, time, duplicates)
+SILKY_INTERCEPT_PERCENT = 100  # Profile 100% of requests (lower in busy dev to reduce overhead)
+SILKY_META = True              # Show request meta (headers, etc.)

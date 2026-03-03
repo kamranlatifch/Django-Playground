@@ -16,11 +16,12 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from student import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # Admin panel
+    path("silk/", include("silk.urls", namespace="silk")),  # Query profiling UI
     path("student/", views.student_list, name="student_list"),  # List all students
     path(
         "student/create/", views.student_create, name="student_create"

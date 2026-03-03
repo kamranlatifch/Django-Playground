@@ -4,15 +4,19 @@ from .models import Student, StudentProfile
 
 
 def student_list(request):
-    """Display list of all students"""
+    """Display list of all students.
+    For detail pages that show profile, use select_related('profile') on the
+    detail view; the list view doesn't need it if the template doesn't touch profile.
+    """
     students = Student.objects.all().order_by("-created_at")
     return render(request, "student/student_list.html", {"students": students})
 
 
 def student_detail(request, id):
-    """Display details of a single student"""
-    student = get_object_or_404(Student, id=id)
-    # Try to get profile if it exists
+    """Display details of a single student.
+    select_related('profile') loads profile in the same query (one DB hit instead of two).
+    """
+    student = get_object_or_404(Student.objects.select_related("profile"), id=id)
     try:
         profile = student.profile
     except StudentProfile.DoesNotExist:
@@ -116,8 +120,11 @@ def student_delete(request, id):
 
 
 def profile_list(request):
-    """Display list of all profiles"""
-    profiles = StudentProfile.objects.all().order_by("-created_at")
+    """Display list of all profiles.
+    Uses select_related('student') to avoid N+1: one query instead of 1 + N when
+    the template accesses profile.student (e.g. name). Check /silk/ to compare.
+    """
+    profiles = StudentProfile.objects.select_related("student").order_by("-created_at")
     return render(request, "student/profile_list.html", {"profiles": profiles})
 
 
