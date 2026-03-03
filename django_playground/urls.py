@@ -17,7 +17,41 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from student import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # Admin panel
+    path("student/", views.student_list, name="student_list"),  # List all students
+    path(
+        "student/create/", views.student_create, name="student_create"
+    ),  # Create student
+    path(
+        "student/<int:id>/", views.student_detail, name="student_detail"
+    ),  # Student detail
+    path(
+        "student/<int:id>/update/", views.student_update, name="student_update"
+    ),  # Update student
+    path(
+        "student/<int:id>/delete/", views.student_delete, name="student_delete"
+    ),  # Delete student
+    # Profile URLs
+    path("profile/", views.profile_list, name="profile_list"),  # List all profiles
+    path(
+        "profile/create/",
+        views.profile_create,
+        name="profile_create",
+    ),  # Create profile
+    path(
+        "profile/<int:id>/", views.profile_detail, name="profile_detail"
+    ),  # Profile detail
+    path(
+        "profile/<int:id>/update/",
+        views.profile_update,
+        name="profile_update",
+    ),  # Update profile
+    path(
+        "profile/<int:id>/delete/",
+        views.profile_delete,
+        name="profile_delete",
+    ),  # Delete profile
 ]

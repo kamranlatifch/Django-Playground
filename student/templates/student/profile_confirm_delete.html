@@ -1,0 +1,25 @@
+{% extends 'student/base.html' %}
+
+{% block title %}Delete Profile - Student Management{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 2rem;">
+        <a href="{% url 'profile_detail' profile.id %}" style="color: #667eea; text-decoration: none;">← Back to Profile Details</a>
+    </div>
+    
+    <div style="background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; text-align: center;">
+        <h1 style="color: #dc3545; margin-bottom: 1rem;">Delete Profile</h1>
+        <p style="color: #666; margin-bottom: 2rem; font-size: 1.1rem;">
+            Are you sure you want to delete the profile for <strong>{{ student.name }}</strong>?
+        </p>
+        <p style="color: #999; margin-bottom: 2rem;">
+            This action cannot be undone. The student record will remain, but profile information will be lost.
+        </p>
+        
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="margin-right: 1rem;">Yes, Delete Profile</button>
+            <a href="{% url 'profile_detail' profile.id %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

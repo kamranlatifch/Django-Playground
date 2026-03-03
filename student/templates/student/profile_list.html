@@ -1,0 +1,57 @@
+{% extends 'student/base.html' %}
+
+{% block title %}All Profiles - Student Management{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: #667eea;">All Student Profiles</h1>
+        <a href="{% url 'profile_create' %}" class="btn btn-primary">+ Add New Profile</a>
+    </div>
+    
+    {% if profiles %}
+        <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #667eea; color: white;">
+                        <th style="padding: 1rem; text-align: left;">Student</th>
+                        <th style="padding: 1rem; text-align: left;">Roll No</th>
+                        <th style="padding: 1rem; text-align: left;">Emergency Contact</th>
+                        <th style="padding: 1rem; text-align: left;">Parent Name</th>
+                        <th style="padding: 1rem; text-align: left;">Created</th>
+                        <th style="padding: 1rem; text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in profiles %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1rem;">
+                                <a href="{% url 'profile_detail' profile.id %}" style="color: #667eea; text-decoration: none; font-weight: 500;">
+                                    {{ profile.student.name }}
+                                </a>
+                            </td>
+                            <td style="padding: 1rem;">{{ profile.student.roll_no }}</td>
+                            <td style="padding: 1rem;">{{ profile.emergency_contact|default:"-" }}</td>
+                            <td style="padding: 1rem;">{{ profile.parent_name|default:"-" }}</td>
+                            <td style="padding: 1rem;">{{ profile.created_at|date:"M d, Y" }}</td>
+                            <td style="padding: 1rem; text-align: center;">
+                                <a href="{% url 'profile_detail' profile.id %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">View</a>
+                                <a href="{% url 'profile_update' profile.id %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">Edit</a>
+                                <a href="{% url 'profile_delete' profile.id %}" class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 1rem; color: #666;">
+            <p>Total Profiles: <strong>{{ profiles.count }}</strong></p>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #999; margin-bottom: 1rem;">No profiles found!</h2>
+            <p style="color: #999; margin-bottom: 2rem;">Get started by creating your first profile.</p>
+            <a href="{% url 'profile_create' %}" class="btn btn-primary">Create First Profile</a>
+        </div>
+    {% endif %}
+{% endblock %}

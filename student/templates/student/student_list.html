@@ -1,0 +1,57 @@
+{% extends 'student/base.html' %}
+
+{% block title %}All Students - Student Management{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: #667eea;">All Students</h1>
+        <a href="{% url 'student_create' %}" class="btn btn-primary">+ Add New Student</a>
+    </div>
+    
+    {% if students %}
+        <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #667eea; color: white;">
+                        <th style="padding: 1rem; text-align: left;">Name</th>
+                        <th style="padding: 1rem; text-align: left;">Roll No</th>
+                        <th style="padding: 1rem; text-align: left;">Age</th>
+                        <th style="padding: 1rem; text-align: left;">Email</th>
+                        <th style="padding: 1rem; text-align: left;">Phone</th>
+                        <th style="padding: 1rem; text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1rem;">
+                                <a href="{% url 'student_detail' student.id %}" style="color: #667eea; text-decoration: none; font-weight: 500;">
+                                    {{ student.name }}
+                                </a>
+                            </td>
+                            <td style="padding: 1rem;">{{ student.roll_no }}</td>
+                            <td style="padding: 1rem;">{{ student.age }}</td>
+                            <td style="padding: 1rem;">{{ student.email }}</td>
+                            <td style="padding: 1rem;">{{ student.phone }}</td>
+                            <td style="padding: 1rem; text-align: center;">
+                                <a href="{% url 'student_detail' student.id %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">View</a>
+                                <a href="{% url 'student_update' student.id %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">Edit</a>
+                                <a href="{% url 'student_delete' student.id %}" class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 1rem; color: #666;">
+            <p>Total Students: <strong>{{ students.count }}</strong></p>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #999; margin-bottom: 1rem;">No students found!</h2>
+            <p style="color: #999; margin-bottom: 2rem;">Get started by adding your first student.</p>
+            <a href="{% url 'student_create' %}" class="btn btn-primary">Add First Student</a>
+        </div>
+    {% endif %}
+{% endblock %}

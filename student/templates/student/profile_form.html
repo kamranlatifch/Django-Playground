@@ -1,0 +1,106 @@
+{% extends 'student/base.html' %}
+
+{% block title %}{{ form_type }} Profile - Student Management{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 2rem;">
+        <a href="{% url 'profile_list' %}" style="color: #667eea; text-decoration: none;">← Back to All Profiles</a>
+    </div>
+    
+    <div style="background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto;">
+        <h1 style="color: #667eea; margin-bottom: 2rem;">{{ form_type }} Profile</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="student" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Select Student *</label>
+                <select id="student" name="student" required
+                        style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    <option value="">-- Select a Student --</option>
+                    {% for s in students %}
+                        <option value="{{ s.id }}" {% if profile and profile.student.id == s.id %}selected{% elif student and student.id == s.id %}selected{% endif %}>
+                            {{ s.name }} (Roll: {{ s.roll_no }})
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if students_without_profile %}
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                        💡 Tip: Students without profiles: 
+                        {% for s in students_without_profile %}
+                            {{ s.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="bio" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Biography</label>
+                <textarea id="bio" name="bio" rows="4"
+                          style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem; font-family: inherit;">{% if profile %}{{ profile.bio }}{% endif %}</textarea>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="profile_picture_url" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Profile Picture URL</label>
+                <input type="url" id="profile_picture_url" name="profile_picture_url" value="{% if profile %}{{ profile.profile_picture_url }}{% endif %}"
+                       style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;" placeholder="https://example.com/image.jpg">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <label for="emergency_contact" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Emergency Contact</label>
+                    <input type="text" id="emergency_contact" name="emergency_contact" value="{% if profile %}{{ profile.emergency_contact }}{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                </div>
+                
+                <div>
+                    <label for="emergency_phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Emergency Phone</label>
+                    <input type="text" id="emergency_phone" name="emergency_phone" value="{% if profile %}{{ profile.emergency_phone }}{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="hobbies" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Hobbies</label>
+                <textarea id="hobbies" name="hobbies" rows="3"
+                          style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem; font-family: inherit;">{% if profile %}{{ profile.hobbies }}{% endif %}</textarea>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="achievements" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Achievements</label>
+                <textarea id="achievements" name="achievements" rows="3"
+                          style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem; font-family: inherit;">{% if profile %}{{ profile.achievements }}{% endif %}</textarea>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <label for="blood_group" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Blood Group</label>
+                    <input type="text" id="blood_group" name="blood_group" value="{% if profile %}{{ profile.blood_group }}{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;" placeholder="A+, B+, O+, etc.">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #eee;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Parent Information</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label for="parent_name" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Parent Name</label>
+                        <input type="text" id="parent_name" name="parent_name" value="{% if profile %}{{ profile.parent_name }}{% endif %}"
+                               style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                    
+                    <div>
+                        <label for="parent_email" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Parent Email</label>
+                        <input type="email" id="parent_email" name="parent_email" value="{% if profile %}{{ profile.parent_email }}{% endif %}"
+                               style="width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+                <a href="{% url 'profile_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
