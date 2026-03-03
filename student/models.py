@@ -13,8 +13,14 @@ class Student(models.Model):
     email = models.EmailField(unique=True, max_length=100)
     phone = models.CharField(max_length=15)
     address = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            # Composite: order_by('-created_at', 'roll_no') or filter + sort by created_at
+            models.Index(fields=["-created_at", "roll_no"], name="student_created_roll_idx"),
+        ]
 
     def __str__(self):
         return f"{self.name} (Roll: {self.roll_no})"
@@ -51,7 +57,7 @@ class StudentProfile(models.Model):
     parent_name = models.CharField(max_length=100, blank=True)
     parent_email = models.EmailField(blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
